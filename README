@@ -34,9 +34,9 @@ DESCRIPTION
 
 METHODS AND ARGUMENTS
 
-    new
+new
 
-        This constructs a C<Net::WhatPulse> object with the default settings. Named parameters can be optionally supplied to change the behaviour of the instance.
+    This constructs a C<Net::WhatPulse> object with the default settings. Named parameters can be optionally supplied to change the behaviour of the instance.
 
     apiurl
 
