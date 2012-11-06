@@ -11,22 +11,22 @@ our $VERSION = 0.1;
 
 sub new {
     my ( $class, %args ) = @_;
-    my $this = bless {
+    my $self = bless {
         apiurl        => 'http://whatpulse.org/api',
         user_endpoint => '/user.php?UserID=',
         team_endpoint => '/team.php?TeamID=',
         useragent_str => "Net-WhatPulse/$VERSION",
     }, $class;
 
-    $this->{$_} = $args{$_} for ( keys %args );
-    return $this;
+    $self->{$_} = $args{$_} for ( keys %args );
+    return $self;
 }
 
 sub get_user {
-    my ( $this, $user ) = @_;
-    my $url = join '', $this->{apiurl}, $this->{user_endpoint}, $user;
-    if ( my $xml = $this->_fetch_xml($url) ) {
-        return $this->_xml_to_hash($xml);
+    my ( $self, $user ) = @_;
+    my $url = join '', $self->{apiurl}, $self->{user_endpoint}, $user;
+    if ( my $xml = $self->_fetch_xml($url) ) {
+        return $self->_xml_to_hash($xml);
     }
     else {
         return 0;
@@ -34,10 +34,10 @@ sub get_user {
 }
 
 sub get_team {
-    my ( $this, $team ) = @_;
-    my $url = join '', $this->{apiurl}, $this->{team_endpoint}, $team;
-    if ( my $xml = $this->_fetch_xml($url) ) {
-        return $this->_xml_to_hash($xml);
+    my ( $self, $team ) = @_;
+    my $url = join '', $self->{apiurl}, $self->{team_endpoint}, $team;
+    if ( my $xml = $self->_fetch_xml($url) ) {
+        return $self->_xml_to_hash($xml);
     }
     else {
         return 0;
@@ -45,34 +45,31 @@ sub get_team {
 }
 
 sub _xml_to_hash {
-    my ( $this, $xml ) = @_;
+    my ( $self, $xml ) = @_;
     return XMLin( $xml, SuppressEmpty => 1 );
 }
 
 sub _ua {
-    my ( $this, $ua ) = @_;
-    $this->{ua} = $ua if defined $ua;
-    if ( !defined $this->{ua} ) {
+    my ( $self, $ua ) = @_;
+    $self->{ua} = $ua if defined $ua;
+    if ( !defined $self->{ua} ) {
         $ua = LWP::UserAgent->new;
-        $ua->agent( $this->{useragent} );
-        $this->{ua} = $ua;
+        $ua->agent( $self->{useragent} );
+        $self->{ua} = $ua;
     }
-    return $this->{ua};
+    return $self->{ua};
 }
 
 sub _fetch_xml {
-    my ( $this, $uri ) = @_;
-    my $ua = $this->_ua();
+    my ( $self, $uri ) = @_;
+    my $ua = $self->_ua();
     my $req = HTTP::Request->new( GET => $uri );
     $req->header( Accept => 'text/xml' );
     my $res = $ua->request($req);
-    if ( $res->is_success ) {
-        return $res->content;
-    }
-    else {
+    if ( !$res->is_success ) {
         croak $res->status_line;
-        return 0;
     }
+    return $res->content;
 }
 
 1;
@@ -111,7 +108,7 @@ VERSION 0.1
 
 This module provides a perl interface to the WhatPulse APIs.  
 
-If an XML attribute is empty, for example if the user is not part of a team, the attribute will be surpressed and not appear in the returned data structure. Therefore always check for the existence of an attribute before attempting to use it.
+Note: Empty attributes will be surpressed, check for the existence of certain attributes before attempting to use it.
 
 =head1 METHODS AND ARGUMENTS
 
@@ -150,6 +147,8 @@ An LWP::UserAgent instance for querying the WhatPulse WebAPI.
 =item get_user($username)
 
 Retrieve a HashRef of the User statistics by the username or numeric user_id.
+
+Note: TeamID will be 0 if the user does not belong to a team
 
 =item get_team($team_id)
 
