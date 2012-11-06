@@ -1,14 +1,14 @@
 NAME
-    Net::WhatPulse - Perl module for retrieving WhatPulse.org user or team
+    WebService::WhatPulse - Perl module for retrieving WhatPulse.org user or team
     stats
 
 VERSION
     VERSION 0.1
 
 SYNOPSIS
-        use Net::WhatPulse;
+        use WebService::WhatPulse;
 
-        my $wp = Net::WhatPulse->new;
+        my $wp = WebService::WhatPulse->new;
 
         my $stats = $wp->get_user('hipyhop');
 
@@ -36,7 +36,7 @@ METHODS AND ARGUMENTS
 
 new
 
-    This constructs a C<Net::WhatPulse> object with the default settings. Named parameters can be optionally supplied to change the behaviour of the instance.
+    This constructs a C<WebService::WhatPulse> object with the default settings. Named parameters can be optionally supplied to change the behaviour of the instance.
 
     apiurl
 
@@ -54,7 +54,7 @@ new
 
     useragent_str
 
-        A string to be used as the useragent string. Defaults to "Net-WhatPulse/$VERSION".
+        A string to be used as the useragent string. Defaults to "WebService-WhatPulse/$VERSION".
 
     ua
 
@@ -70,7 +70,7 @@ get_team($team_id)
 
 SUPPORT
 
-    Please submit all issues to the project page at L<http://github.com/hipyhop/net-whatpulse>
+    Please submit all issues to the project page at L<http://github.com/hipyhop/webservice-whatpulse>
 
 AUTHOR
 

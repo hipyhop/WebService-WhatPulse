@@ -1,4 +1,4 @@
-package Net::WhatPulse;
+package WhatPulse::WhatPulse;
 
 use strict;
 use warnings;
@@ -15,7 +15,7 @@ sub new {
         apiurl        => 'http://whatpulse.org/api',
         user_endpoint => '/user.php?UserID=',
         team_endpoint => '/team.php?TeamID=',
-        useragent_str => "Net-WhatPulse/$VERSION",
+        useragent_str => "WhatPulse-WhatPulse/$VERSION",
     }, $class;
 
     $self->{$_} = $args{$_} for ( keys %args );
@@ -78,7 +78,7 @@ __END__
 
 =head1 NAME
 
-Net::WhatPulse - Perl module for retrieving WhatPulse.org user or team stats
+WhatPulse::WhatPulse - Perl module for retrieving WhatPulse.org user or team stats
 
 =head1 VERSION
 
@@ -86,9 +86,9 @@ VERSION 0.1
 
 =head1 SYNOPSIS
 
-    use Net::WhatPulse;
+    use WhatPulse::WhatPulse;
 
-    my $wp = Net::WhatPulse->new;
+    my $wp = WhatPulse::WhatPulse->new;
 
     my $stats = $wp->get_user('hipyhop');
 
@@ -116,7 +116,7 @@ Note: Empty attributes will be surpressed, check for the existence of certain at
 
 =item new
 
-This constructs a C<Net::WhatPulse> object with the default settings. Named parameters can be optionally supplied to change the behaviour of the instance.
+This constructs a C<WhatPulse::WhatPulse> object with the default settings. Named parameters can be optionally supplied to change the behaviour of the instance.
 
 =over 4
 
@@ -136,7 +136,7 @@ The API endpoint to query for Team stats. Defaults to '/team.php?TeamID='. The t
 
 =item useragent_str
 
-A string to be used as the useragent string. Defaults to "Net-WhatPulse/$VERSION".
+A string to be used as the useragent string. Defaults to "WhatPulse-WhatPulse/$VERSION".
 
 =item ua
 
@@ -158,7 +158,7 @@ Retrieves a HashRef of the Team statistics by the numeric team_id.
 
 =head1 SUPPORT
 
-Please submit all issues to the project page at L<http://github.com/hipyhop/net-whatpulse>
+Please submit all issues to the project page at L<http://github.com/hipyhop/webservice-whatpulse>
 
 =head1 AUTHOR
 

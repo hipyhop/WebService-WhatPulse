@@ -1,4 +1,8 @@
-Revision history for Net-WhatPulse
+Revision history for WebService-WhatPulse
+
+0.2    06 November 2012
+        Renamed to WebService::WhatPulse to help prevent further pollution of the Net:: namespace
+        
 
 0.1    Date/time
         First version
