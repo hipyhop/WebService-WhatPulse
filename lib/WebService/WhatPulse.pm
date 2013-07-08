@@ -12,10 +12,11 @@ our $VERSION = 0.1;
 sub new {
     my ( $class, %args ) = @_;
     my $self = bless {
-        apiurl        => 'http://whatpulse.org/api',
-        user_endpoint => '/user.php?UserID=',
-        team_endpoint => '/team.php?TeamID=',
-        useragent_str => "WhatPulse-WhatPulse/$VERSION",
+        api_url        => 'http://api.whatpulse.org',
+        user_endpoint => '/user.php?format=json&user=',
+        team_endpoint => '/team.php?format=json&team=<TEAMID>',
+        pulses_endpoint => '/pulses.php?format=json&user=',
+        useragent_str => "WebService-WhatPulse/$VERSION",
     }, $class;
 
     $self->{$_} = $args{$_} for ( keys %args );
@@ -122,17 +123,17 @@ This constructs a C<WebService::WhatPulse> object with the default settings. Nam
 
 =item apiurl
 
-This is the default URL of the API, defaults to http://whatpulse.org/api. Modify this if the URL changes or to use a custom server.
+This is the default URL of the API, defaults to http://api.whatpulse.org. Modify this if the URL changes or to use a custom server.
 
 Use of 'file:/' is allowed to access local files.
 
 =item user_endpoint
 
-The API endpoint to query for User stats. Defaults to '/user.php?UserID='. The username will be concatenated by the get_user method.
+The API endpoint to query for User stats. Defaults to '/user.php?user='. The username will be concatenated by the get_user method.
 
 =item team_endpoint
 
-The API endpoint to query for Team stats. Defaults to '/team.php?TeamID='. The team id will be concatenated by the get_user method.
+The API endpoint to query for Team stats. Defaults to '/team.php?team='. The team id will be concatenated by the get_user method.
 
 =item useragent_str
 
