@@ -7,7 +7,35 @@ use LWP::UserAgent;
 use XML::Simple;
 use Carp;
 
-our $VERSION = 0.1;
+=head1 NAME
+
+WebService::WhatPulse - Perl module for retrieving WhatPulse.org user or team stats
+
+=head1 VERSION
+
+Version 0.02
+
+=cut
+
+our $VERSION = '0.02';
+
+
+=head1 SYNOPSIS
+
+Quick summary of what the module does.
+
+Perhaps a little code snippet.
+
+    use WebService::WhatPulse;
+
+    my $foo = WebService::WhatPulse->new();
+    ...
+
+=head1 SUBROUTINES/METHODS
+
+=head2 new
+
+=cut
 
 sub new {
     my ( $class, $args ) = @_;
@@ -80,39 +108,9 @@ sub _fetch_xml {
 
 __END__
 
-=head1 NAME
-
-WhatPulse::WhatPulse - Perl module for retrieving WhatPulse.org user or team stats
-
-=head1 VERSION
-
-VERSION 0.1
-
-=head1 SYNOPSIS
-
-    use WhatPulse::WhatPulse;
-
-    my $wp = WhatPulse::WhatPulse->new;
-
-    my $stats = $wp->get_user('hipyhop');
-
-    while(my ($key, $value) = each %{$stats}){
-        print "$key: $value\n";
-    }
-
-    if($stats{'TeamID'} != 0){
-        my $team_stats = $wp->get_team($stats{'TeamID'});
-
-        while(my ($key, $value) = each %{$team_stats}){
-            print "$key: $value\n";
-        }
-    }
-
 =head1 DESCRIPTION
 
-This module provides a perl interface to the WhatPulse APIs.  
-
-Note: Empty attributes will be surpressed, check for the existence of certain attributes before attempting to use it.
+This module provides a perl interface to the WhatPulse stats API.
 
 =head1 METHODS AND ARGUMENTS
 
@@ -151,8 +149,6 @@ An LWP::UserAgent instance for querying the WhatPulse WebAPI.
 =item get_user($username)
 
 Retrieve a HashRef of the User statistics by the username or numeric user_id.
-
-Note: TeamID will be 0 if the user does not belong to a team
 
 =item get_team($team_id)
 
