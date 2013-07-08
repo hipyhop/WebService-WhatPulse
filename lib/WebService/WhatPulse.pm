@@ -1,4 +1,4 @@
-package WhatPulse::WhatPulse;
+package WebService::WhatPulse;
 
 use strict;
 use warnings;
@@ -116,7 +116,7 @@ Note: Empty attributes will be surpressed, check for the existence of certain at
 
 =item new
 
-This constructs a C<WhatPulse::WhatPulse> object with the default settings. Named parameters can be optionally supplied to change the behaviour of the instance.
+This constructs a C<WebService::WhatPulse> object with the default settings. Named parameters can be optionally supplied to change the behaviour of the instance.
 
 =over 4
 
@@ -136,7 +136,7 @@ The API endpoint to query for Team stats. Defaults to '/team.php?TeamID='. The t
 
 =item useragent_str
 
-A string to be used as the useragent string. Defaults to "WhatPulse-WhatPulse/$VERSION".
+A string to be used as the useragent string. Defaults to "WebService-WhatPulse/$VERSION".
 
 =item ua
 
