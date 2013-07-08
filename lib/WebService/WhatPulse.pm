@@ -10,7 +10,7 @@ use Carp;
 our $VERSION = 0.1;
 
 sub new {
-    my ( $class, %args ) = @_;
+    my ( $class, $args ) = @_;
     my $self = bless {
         api_url        => 'http://api.whatpulse.org',
         user_endpoint => '/user.php?format=json&user=',
@@ -19,7 +19,10 @@ sub new {
         useragent_str => "WebService-WhatPulse/$VERSION",
     }, $class;
 
-    $self->{$_} = $args{$_} for ( keys %args );
+    #Add/override any settings passed in %$args;
+    if( ref $args eq 'HASH' ){
+        $self->{$_} = $args->{$_} for ( keys %$args );
+    }
     return $self;
 }
 
