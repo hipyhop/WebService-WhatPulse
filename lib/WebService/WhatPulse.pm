@@ -66,14 +66,27 @@ sub get_user {
 }
 
 sub get_team {
-    my ( $self, $team ) = @_;
-    my $url = join '', $self->{apiurl}, $self->{team_endpoint}, $team;
-    if ( my $xml = $self->_fetch_xml($url) ) {
-        return $self->_xml_to_hash($xml);
-    }
-    else {
-        return 0;
-    }
+    my ( $self, $team, $show_members ) = @_;
+    $team //= $self->{team};
+    my $api_url = $self->{api_url};
+    my $endpoint = $self->{team_endpoint};
+
+    croak "No team name or id passed to get_team\n" if !defined $team;
+    croak "API url or endpoint for teams is not defined\n" if !defined $api_url || !defined $endpoint;
+
+
+    $endpoint =~ s/<TEAMID>/$team/;
+    $endpoint .= "&members=yes" if $show_members;
+
+    $api_url .= $endpoint;
+
+    print $api_url;
+#    if ( my $xml = $self->_fetch_xml($url) ) {
+#        return $self->_xml_to_hash($xml);
+#    }
+#    else {
+#        return 0;
+#    }
 }
 
 sub _xml_to_hash {
