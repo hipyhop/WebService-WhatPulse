@@ -49,7 +49,7 @@ sub new {
 
     #Add/override any settings passed in %$args;
     if( ref $args eq 'HASH' ){
-        $self->{$_} = $args->{$_} for ( keys %$args );
+        $self->{$_} = $args->{$_} for keys %$args;
     }
     return $self;
 }
@@ -95,6 +95,19 @@ sub get_user_stats {
 
     print $api_url;
 }
+
+sub user {
+    my ( $self, $user ) = @_;
+    $self->{user} = $user if defined $user;
+    return $self->{user};
+}
+
+sub team {
+    my ( $self, $team ) = @_;
+    $self->{team} = $team if defined $team;
+    return $self->{team};
+}
+
 sub _xml_to_hash {
     my ( $self, $xml ) = @_;
     return XMLin( $xml, SuppressEmpty => 1 );
@@ -161,7 +174,7 @@ A string to be used as the useragent string. Defaults to "WebService-WhatPulse/$
 
 =item ua
 
-An LWP::UserAgent instance for querying the WhatPulse WebAPI.
+An LWP::UserAgent instance for querying the WhatPulse WebAPI. If not supplied one will be created.
 
 =back
 
