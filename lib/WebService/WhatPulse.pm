@@ -41,9 +41,9 @@ sub new {
     my ( $class, $args ) = @_;
     my $self = bless {
         api_url        => 'http://api.whatpulse.org',
-        user_endpoint => '/user.php?format=json&user=',
+        user_endpoint => '/user.php?format=json&user=<USERID>',
         team_endpoint => '/team.php?format=json&team=<TEAMID>',
-        pulses_endpoint => '/pulses.php?format=json&user=',
+        pulses_endpoint => '/pulses.php?format=json&user=<USERID>',
         useragent_str => "WebService-WhatPulse/$VERSION",
     }, $class;
 
@@ -54,25 +54,14 @@ sub new {
     return $self;
 }
 
-sub get_user {
-    my ( $self, $user ) = @_;
-    my $url = join '', $self->{apiurl}, $self->{user_endpoint}, $user;
-    if ( my $xml = $self->_fetch_xml($url) ) {
-        return $self->_xml_to_hash($xml);
-    }
-    else {
-        return 0;
-    }
-}
-
-sub get_team {
+sub get_team_stats {
     my ( $self, $team, $show_members ) = @_;
-    $team //= $self->{team};
+    $self->{team} = $team if defined $team;
     my $api_url = $self->{api_url};
     my $endpoint = $self->{team_endpoint};
 
-    croak "No team name or id passed to get_team\n" if !defined $team;
-    croak "API url or endpoint for teams is not defined\n" if !defined $api_url || !defined $endpoint;
+    croak "No team name or id passed to get_team" if !defined $self->{team};
+    croak "API url or endpoint for teams is not defined" if !defined $api_url || !defined $endpoint;
 
 
     $endpoint =~ s/<TEAMID>/$team/;
@@ -89,6 +78,23 @@ sub get_team {
 #    }
 }
 
+sub get_user_stats {
+    my ( $self, $username ) = @_;
+    $self->{user} = $username if defined $username;
+
+    my $api_url = $self->{api_url};
+    my $endpoint = $self->{user_endpoint};
+
+    croak "No username or id passed to get_user_stats" if !defined $self->{user};
+    croak "API url or endpoint for users is not defined" if !defined $api_url || !defined $endpoint;
+
+
+    $endpoint =~ s/<USERID>/$self->{user}/;
+
+    $api_url .= $endpoint;
+
+    print $api_url;
+}
 sub _xml_to_hash {
     my ( $self, $xml ) = @_;
     return XMLin( $xml, SuppressEmpty => 1 );
@@ -143,11 +149,11 @@ Use of 'file:/' is allowed to access local files.
 
 =item user_endpoint
 
-The API endpoint to query for User stats. Defaults to '/user.php?user='. The username will be concatenated by the get_user method.
+The API endpoint to query for User stats. Defaults to '/user.php?user=<USERID>'. The <USERID> token will be substituted for the user name or ID.
 
 =item team_endpoint
 
-The API endpoint to query for Team stats. Defaults to '/team.php?team='. The team id will be concatenated by the get_user method.
+The API endpoint to query for Team stats. Defaults to '/team.php?team=<TEAMID>'. The <TEAMID> token will be substituted for the supplied team name or ID.
 
 =item useragent_str
 
@@ -159,11 +165,11 @@ An LWP::UserAgent instance for querying the WhatPulse WebAPI.
 
 =back
 
-=item get_user($username)
+=item get_user_stats($username)
 
 Retrieve a HashRef of the User statistics by the username or numeric user_id.
 
-=item get_team($team_id)
+=item get_team_stats($team_id)
 
 Retrieves a HashRef of the Team statistics by the numeric team_id.
 
